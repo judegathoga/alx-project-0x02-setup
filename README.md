@@ -5,21 +5,21 @@ A Barebones Airbnb Clone for a Gentle Introduction to Next.js, TypeScript, and T
 This project is a comprehensive introduction to setting up and working with Next.js, TypeScript, and Tailwind CSS. The project builds on the following concepts:
 
 1. Mastering Proper Project Structure
-   - Organizing components by domain (layout, common, etc.)
-   - Keeping interfaces in a dedicated folder
-   - Separating pages according to routes
+      - Organizing components by domain (layout, common, etc.)
+      - Keeping interfaces in a dedicated folder
+      - Separating pages according to routes
 2. Component Design:
-  - Creating reusable, modular components
-  - Using TypeScript interfaces for props
-  - Following the single responsibility principle
+     - Creating reusable, modular components
+     - Using TypeScript interfaces for props
+     - Following the single responsibility principle
 3. Code Quality:
-  - Using ESLint for linting
-  - Maintaining consistent code style
-  - Adding meaningful comments where necessary
+     - Using ESLint for linting
+     - Maintaining consistent code style
+     - Adding meaningful comments where necessary
 4. Performance:
-  - Optimizing API calls
-  - Implementing lazy loading where appropriate
-  - Using Tailwind CSS for efficient styling
+     - Optimizing API calls
+     - Implementing lazy loading where appropriate
+     - Using Tailwind CSS for efficient styling
 
 ### Objectives
 To:
