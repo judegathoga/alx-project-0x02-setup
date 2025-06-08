@@ -57,4 +57,6 @@ export const getStaticProps: GetStaticProps<UsersPageProps> = async () => {
   }
 };
 
+// ["getStaticProps"]
+
 export default Users; 
