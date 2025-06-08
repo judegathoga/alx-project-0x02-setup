@@ -35,6 +35,12 @@ const Header: React.FC = () => {
             >
               Posts
             </Link>
+            <Link 
+              href="/users" 
+              className={`text-gray-600 hover:text-gray-900 ${isActive('/users') ? 'font-semibold text-blue-600' : ''}`}
+            >
+              Users
+            </Link>
           </div>
         </nav>
       </div>
