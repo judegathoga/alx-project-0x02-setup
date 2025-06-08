@@ -22,4 +22,11 @@ export interface ButtonProps {
   shape?: ButtonShape;
   onClick?: () => void;
   className?: string;
+}
+
+export interface PostProps {
+  id: number;
+  title: string;
+  body: string;
+  userId: number;
 } 

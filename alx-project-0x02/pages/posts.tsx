@@ -1,24 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '@/components/layout/Header';
-import Card from '@/components/common/Card';
-import { type CardProps } from '@/interfaces';
+import PostCard from '@/components/common/PostCard';
+import { type PostProps } from '@/interfaces';
 
 const Posts: React.FC = () => {
-  // This would typically come from an API or database
-  const posts: CardProps[] = [
-    {
-      title: "Getting Started with Next.js",
-      content: "Learn how to build modern web applications with Next.js and React."
-    },
-    {
-      title: "TypeScript Best Practices",
-      content: "Discover the best practices for writing type-safe code with TypeScript."
-    },
-    {
-      title: "Building Responsive UIs",
-      content: "Master the art of creating beautiful and responsive user interfaces."
-    }
-  ];
+  const [posts, setPosts] = useState<PostProps[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+        if (!response.ok) {
+          throw new Error('Failed to fetch posts');
+        }
+        const data = await response.json();
+        setPosts(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <Header />
+        <main className="container mx-auto px-4 py-8">
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <div className="text-xl text-gray-600">Loading posts...</div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <Header />
+        <main className="container mx-auto px-4 py-8">
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <div className="text-xl text-red-600">Error: {error}</div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -27,11 +60,13 @@ const Posts: React.FC = () => {
         <h1 className="text-4xl font-bold text-gray-900 mb-8">Blog Posts</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.map((post, index) => (
-            <Card 
-              key={index}
+          {posts.map((post) => (
+            <PostCard 
+              key={post.id}
+              id={post.id}
               title={post.title}
-              content={post.content}
+              body={post.body}
+              userId={post.userId}
             />
           ))}
         </div>
