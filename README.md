@@ -1,5 +1,5 @@
 # Next.js Project Setup and Basics.
-A Barebones Airbnb Clone for an introduction to Next.js, TypeScript, and Tailwind CSS.
+A Barebones Airbnb Clone for a Gentle Introduction to Next.js, TypeScript, and Tailwind CSS.
 ---
 ### Brief Description
 This project is a comprehensive introduction to setting up and working with Next.js, TypeScript, and Tailwind CSS. The project builds on the following concepts:
