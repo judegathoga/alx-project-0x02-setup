@@ -1,63 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Header from '@/components/layout/Header';
 import PostCard from '@/components/common/PostCard';
 import { type PostProps } from '@/interfaces';
+import { GetStaticProps } from 'next';
 
-const Posts: React.FC = () => {
-  const [posts, setPosts] = useState<PostProps[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const POSTS_LIMIT = 15;
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-        if (!response.ok) {
-          throw new Error('Failed to fetch posts');
-        }
-        const data = await response.json();
-        setPosts(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
+interface PostsPageProps {
+  posts: PostProps[];
+}
 
-    fetchPosts();
-  }, []);
-
-  if (loading) {
-    return (
-      <div>
-        <Header />
-        <main className="container mx-auto px-4 py-8">
-          <div className="flex justify-center items-center min-h-[60vh]">
-            <div className="text-xl text-gray-600">Loading posts...</div>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div>
-        <Header />
-        <main className="container mx-auto px-4 py-8">
-          <div className="flex justify-center items-center min-h-[60vh]">
-            <div className="text-xl text-red-600">Error: {error}</div>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
+const Posts: React.FC<PostsPageProps> = ({ posts }) => {
   return (
     <div>
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Blog Posts</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900">Blog Posts</h1>
+          <span className="text-gray-600">Showing {posts.length} posts</span>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post) => (
@@ -73,6 +34,32 @@ const Posts: React.FC = () => {
       </main>
     </div>
   );
+};
+
+export const getStaticProps: GetStaticProps<PostsPageProps> = async () => {
+  try {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=${POSTS_LIMIT}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch posts');
+    }
+    const posts = await response.json();
+
+    return {
+      props: {
+        posts,
+      },
+      // Revalidate every hour
+      revalidate: 3600,
+    };
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return {
+      props: {
+        posts: [],
+      },
+      revalidate: 3600,
+    };
+  }
 };
 
 export default Posts; 
